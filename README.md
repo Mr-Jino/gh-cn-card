@@ -2,6 +2,8 @@
 
 简体中文 | [English](README.en.md)
 
+[![test](https://github.com/Mr-Jino/gh-cn-card/actions/workflows/test.yml/badge.svg)](https://github.com/Mr-Jino/gh-cn-card/actions/workflows/test.yml)
+
 一个浏览器扩展（Edge / Chrome，Manifest V3，无构建步骤）。在任意 GitHub 仓库页点一下「AI 解读」，右侧抽屉流式输出一份结构化中文解读卡，帮你用 3 分钟回答一个问题：**这个项目值不值得我花时间**。
 
 它不是翻译器。翻译解决语言问题，这里解决的是**评估问题**：README 不会告诉你这个项目两个月没发版、issue 里有人反复抱怨某个 bug、依赖装下来有几百 MB——这些全部从 GitHub API 实时抓取，注入提示词，让模型基于事实而不是营销话术下判断。
@@ -62,6 +64,8 @@ gh-cn-card 的做法：
 ### 1. 部署扩展文件
 
 双击 `install-to-edge.bat`。它把 `extension/` 镜像复制到 `%LocalAppData%\GhCnCardExt`（纯 ASCII 路径——Edge 对含中文或空格的路径做"加载解压缩的扩展"会静默失败），并把该路径复制到剪贴板。
+
+> macOS / Linux 没有 bat，等价操作是一行：`cp -R extension ~/GhCnCardExt`，后面照常。
 
 > 为什么不直接加载仓库里的 `extension/` 文件夹：一是路径问题（见上），二是解压缩加载要求文件夹永久留在原地，放 AppData 不怕项目目录挪动。
 
@@ -125,6 +129,7 @@ npm install          # jsdom + playwright-core（仅 devDependencies）
 
 npm test             # 95 条断言，纯 Node，不开浏览器
 npm run shot         # 无头 Edge + 真扩展 + 真模型，重新生成 docs/screenshots
+npm run icons        # 无头 Edge 渲染 SVG，重新生成 extension/icons
 npm run card         # 单仓库真跑一遍解读管线，验证提示词（node tools/test-card.mjs owner/repo）
 ```
 
@@ -143,6 +148,7 @@ npm run card         # 单仓库真跑一遍解读管线，验证提示词（nod
 ```
 extension/              # 交付物本体，加载这一个目录即可
   manifest.json         # MV3
+  icons/                # 扩展图标（tools/icons.mjs 生成）
   background.js         # service worker：取数 / 缓存 / 发现流程编排 / 飞书推送
   content-kit.js        # 抽屉样式表 + 纯函数（无状态，独立成文件避免 UI 状态耦合）
   content.js            # 内容脚本：按钮注入（适配 Turbo/pjax）+ 右侧抽屉

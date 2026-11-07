@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 · 2026-11-07
+
+- 扩展图标（16/32/48/128），由 `tools/icons.mjs` 用无头 Edge 渲染 SVG 生成
+- CI：GitHub Actions 在 Node 20/22 上跑全部 95 条断言，README 挂测试徽章
+- 首个 GitHub Release：附可直接加载的扩展 zip，不用 git 也能装
+
 ## 0.3.0 · 2026-11-07
 
 - **转发到飞书群**：发现页条目可多选「发群」，收藏条目可单发；复用 FRONTIER 的飞书群自定义机器人（HMAC-SHA256 加签与早报一致），推送卡片与早报同款格式
