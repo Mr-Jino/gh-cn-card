@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "GitHub 中文口语解读",
+  "version": "0.3.0",
+  "description": "在 GitHub 仓库页一键生成中文口语解读卡：先听懂它是干什么的，再决定要不要深入。",
+  "permissions": ["storage"],
+  "host_permissions": ["https://api.github.com/*", "https://raw.githubusercontent.com/*"],
+  "optional_host_permissions": ["https://*/*", "http://localhost/*", "http://127.0.0.1/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content-kit.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "GitHub 中文口语解读 · 设置"
+  }
+}

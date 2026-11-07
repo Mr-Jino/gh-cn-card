@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>装到 Edge · 30 秒</title>
+<style>
+  :root{--bg:#0d1117;--panel:#161b22;--line:#30363d;--t1:#e6edf3;--t2:#9198a1;--t3:#6e7681;--ok:#3fb950;--accent:#58a6ff;--warn:#d29922;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--t1);font:15px/1.8 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;max-width:680px;margin:0 auto;padding:48px 24px 80px;}
+  h1{font-size:20px;font-weight:500;margin-bottom:6px;}
+  .sub{color:var(--t2);font-size:13.5px;margin-bottom:28px;}
+  .step{display:flex;gap:14px;margin-bottom:22px;}
+  .n{flex:none;width:26px;height:26px;border-radius:50%;background:#1f6feb;color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;margin-top:3px;}
+  .n.done{background:var(--ok);}
+  .step h2{font-size:15px;font-weight:500;margin-bottom:4px;}
+  .step p{color:var(--t2);font-size:13.5px;}
+  .step b{color:var(--t1);font-weight:500;}
+  code{font-family:ui-monospace,Consolas,monospace;background:#21262d;padding:1px 6px;border-radius:4px;font-size:13px;color:var(--accent);}
+  .path{background:var(--panel);border:1px dashed var(--line);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--t2);margin-bottom:26px;word-break:break-all;}
+  .path b{color:var(--t1);font-weight:500;}
+  .note{border-left:3px solid var(--warn);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;color:var(--t2);margin:26px 0;}
+  .note b{color:var(--warn);font-weight:500;}
+  button{font:500 13px/1 inherit;padding:8px 14px;border-radius:7px;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--t1);}
+  button:hover{border-color:var(--accent);color:var(--accent);}
+  #clipStatus{font-size:12.5px;color:var(--t3);margin-left:10px;}
+</style>
+</head>
+<body>
+<h1>装到 Edge，还差最后两下点击</h1>
+<p class="sub">扩展已部署到纯英文路径 <b>C:\Users\17704\AppData\Local\GhCnCardExt</b>（Edge 对含中文的路径做"解压缩加载"会静默失败，之前卡住就是这个）。路径已复制到剪贴板，文件夹也已打开。</p>
+
+<div class="path">加载这个文件夹（已复制，文件选择框里 <b>Ctrl+V</b> 直接粘贴）：<br><b>C:\Users\17704\AppData\Local\GhCnCardExt</b>
+  <div style="margin-top:8px"><button id="readClip">校验剪贴板</button><span id="clipStatus"></span></div>
+</div>
+
+<div class="step"><div class="n">1</div><div>
+  <h2>回到 Edge 扩展页，找「加载解压缩的扩展」按钮</h2>
+  <p>就在 <code>edge://extensions</code> 页面<b>左上方的工具栏</b>里，「开发人员模式」开着才会出现。注意：<b>拖文件夹进页面是装不上的</b>，那个"拖放以安装"只认打包过的 .crx 文件，必须用这个按钮。</p>
+</div></div>
+
+<div class="step"><div class="n">2</div><div>
+  <h2>文件选择框里：地址栏粘贴 → 回车 → 选择文件夹</h2>
+  <p>在弹出的文件夹选择框顶部的地址栏按 <code>Ctrl+V</code> 粘贴路径，回车，然后点右下角「<b>选择文件夹</b>」。这次是纯英文路径，不会静默失败了。</p>
+</div></div>
+
+<div class="step"><div class="n">3</div><div>
+  <h2>成功的标志</h2>
+  <p>扩展页出现一张「<b>GitHub 中文口语解读 0.1.0</b>」的卡片。如果之前试出过一张带"错误"字样的旧卡片，先删掉它再重新加载。</p>
+</div></div>
+
+<div class="step"><div class="n">3</div><div>
+  <h2>弹出确认就点「添加扩展」</h2>
+  <p>如果提示"此扩展程序并非来自 Microsoft Edge 加载项"，这是正常的——它就是本地开发的扩展，直接确认。</p>
+</div></div>
+
+<div class="step"><div class="n done">✓</div><div>
+  <h2>装好后它会自动弹出设置页</h2>
+  <p>填 API Key（默认 DeepSeek 配置，直接可用）和 GitHub Token，保存。然后去任意 GitHub 仓库页，仓库名旁边就有「AI 解读」。</p>
+</div></div>
+
+<div class="note" style="border-left-color:var(--accent)"><b style="color:var(--accent)">以后更新怎么同步：</b>我改了扩展代码后，你只要再双击一次 <code>install-to-edge.bat</code>（它会把最新代码镜像到 GhCnCardExt），然后在扩展页那张卡片上点「重新加载」即可，不用重新选文件夹。</div>
+
+<div class="note"><b>如果「加载解压缩的扩展」按钮没出现：</b>说明「开发人员模式」没开成功。扩展页左侧栏最底下有个开关，确认它是开的状态（绿色）。</div>
+
+<script>
+  async function readClip() {
+    const s = document.getElementById('clipStatus');
+    try {
+      const t = await navigator.clipboard.readText();
+      if (t && t.toLowerCase().endsWith('ghcncardext')) {
+        s.textContent = ' ✓ 剪贴板里就是它：' + t;
+      } else {
+        s.textContent = ' ✗ 剪贴板里不是扩展路径，重新双击一次 bat';
+      }
+    } catch (e) {
+      s.textContent = ' ✗ 浏览器不让读剪贴板，不影响安装，手动粘贴上面那行路径即可';
+    }
+  }
+  document.getElementById('readClip').addEventListener('click', readClip);
+</script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>GitHub 中文口语解读 · 设置</title>
+<style>
+  :root{
+    --bg:#0d1117;--panel:#161b22;--line:#30363d;--t1:#e6edf3;--t2:#9198a1;--t3:#6e7681;
+    --accent:#58a6ff;--ok:#3fb950;--err:#f85149;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--t1);font:14px/1.65 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;padding:32px 20px 80px;}
+  .wrap{max-width:760px;margin:0 auto;}
+  h1{font-size:18px;font-weight:500;letter-spacing:.01em;}
+  .sub{color:var(--t2);font-size:13px;margin-top:6px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-top:18px;}
+  h2{font-size:13px;font-weight:500;color:var(--t2);letter-spacing:.06em;margin-bottom:14px;}
+  label{display:block;font-size:13px;margin:12px 0 5px;color:var(--t1);}
+  .hint{font-size:12px;color:var(--t3);margin-top:4px;}
+  input[type=text],input[type=password],textarea{
+    width:100%;background:var(--bg);border:1px solid var(--line);border-radius:7px;color:var(--t1);
+    font:13px/1.6 ui-monospace,Consolas,"Microsoft YaHei",monospace;padding:9px 11px;outline:none;
+  }
+  input:focus,textarea:focus{border-color:var(--accent);}
+  textarea{resize:vertical;min-height:96px;}
+  .row{display:flex;gap:12px;}
+  .row>div{flex:1;}
+  .actions{display:flex;gap:10px;align-items:center;margin-top:22px;flex-wrap:wrap;}
+  button{font:500 13px/1 inherit;padding:9px 16px;border-radius:7px;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel);color:var(--t1);}
+  button:hover{border-color:var(--t3);}
+  button.primary{background:#238636;border-color:#2ea043;color:#fff;}
+  button.primary:hover{background:#2ea043;}
+  #status{font-size:12.5px;color:var(--t2);}
+  #status.ok{color:var(--ok);}
+  #status.err{color:var(--err);}
+  .steps{font-size:12.5px;color:var(--t2);line-height:1.8;padding-left:18px;}
+  code{font-family:ui-monospace,Consolas,monospace;background:#21262d;padding:1px 5px;border-radius:4px;font-size:12px;}
+  a{color:var(--accent);text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>GitHub 中文口语解读 <a href="search.html" style="font-size:13px;font-weight:400">→ 去发现页（用中文找仓库）</a></h1>
+  <p class="sub">点仓库页的「AI 解读」，它把 README 读成一份中文口语卡：先讲这玩意儿能干什么，再讲怎么跑，最后给你一句值不值得研究。</p>
+
+  <div class="card">
+    <h2>第一步 · 填三样东西（填一次就完事）</h2>
+
+    <div class="row">
+      <div>
+        <label>① 接口地址（照抄就行）</label>
+        <input id="apiBase" type="text" placeholder="https://api.deepseek.com/v1" />
+      </div>
+      <div>
+        <label>② 模型名（照抄就行）</label>
+        <input id="model" type="text" placeholder="deepseek-chat" />
+      </div>
+    </div>
+
+    <label>③ API Key —— 你跟 DeepSeek 之间的通行证</label>
+    <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+    <div class="hint">
+      这串码告诉 DeepSeek「是你本人在用，费用记你账上」。它只存在你这台电脑的浏览器里，不会被传到任何别的地方。
+      保存时浏览器会弹一个框问「允不允许访问 api.deepseek.com」，<b>必须点允许</b>，不点就连不上。
+    </div>
+
+    <label>GitHub Token（可以不填，但建议填）—— GitHub 发你的门票</label>
+    <input id="githubToken" type="password" placeholder="ghp_... 或 github_pat_..." autocomplete="off" />
+    <div class="hint">
+      没有它，GitHub 限制你每小时只能问 60 次，读十几个仓库就用完了。有它提到 5000 次，随便读。
+      怎么拿：打开 <code>github.com/settings/tokens</code> → Generate new token (classic) → 名字随便写、有效期随便选、<b>下面所有勾选框一个都不用勾</b> → 点 Generate → 把 ghp_ 开头那串复制过来粘贴。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>第二步 · 教它"你的口味"（这部分最重要）</h2>
+    <p class="hint">
+      AI 判断「值不值得」时，全靠这三框文字。打个比方：<b>否决规则里写了"要 20G 显存的不推荐"</b>，那它遇到吃显卡的项目就直接劝退你，而不是硬推荐。
+      所以照你平时说话的写法来，越具体越好。
+    </p>
+    <label>你喜欢哪类东西（沾边的项目，AI 会高看一眼）</label>
+    <textarea id="directions"></textarea>
+    <div class="hint">例如：「批量处理 Excel 的」「能在 Windows 上当小服务跑的」。</div>
+
+    <label>无关紧要、只有特别出彩才值得看的</label>
+    <textarea id="backupDirections"></textarea>
+
+    <label>看到就劝退的（沾上任何一条，直接判"暂时不值得"）</label>
+    <textarea id="vetoes"></textarea>
+    <div class="hint">例如：「要花钱订阅的」「数据必须传到别人云上的」「只有 3060 显卡跑不动的」。</div>
+  </div>
+
+  <div class="card">
+    <h2>第三步 · 和你的早报互通（可选）</h2>
+    <p class="hint">
+      你那个每天早上自动跑的 FRONTIER 早报（在 <code>D:\FRONTIER</code> 文件夹），和这个扩展各自记了一套"你的口味"。
+      这一步让<b>两边共用同一套</b>：早报的经验拿过来给扩展用；扩展攒的"没用"还回去给早报。
+    </p>
+
+    <label>把早报攒的经验导进来（推荐，30 秒）</label>
+    <p class="hint">
+      点「选择文件」，按住 Ctrl 一次选中两个文件：<code>D:\FRONTIER\config.json</code> 和 <code>D:\FRONTIER\feedback.txt</code>。
+      选完自动填进上面第二框并保存——早报这几天攒的判断经验，扩展立刻就会用。
+    </p>
+    <input type="file" id="importFiles" multiple accept=".json,.txt,.env" style="font-size:12.5px;color:var(--t2)" />
+
+    <label style="margin-top:18px">转发到飞书情报群（就用 FRONTIER 那个机器人）</label>
+    <p class="hint">
+      在发现页勾「发群」的仓库、收藏里的仓库，可以一键推到 FRONTIER 的飞书群，和早报出现在同一个地方。
+      配置和早报共用一份：<b>点上面的「选择文件」时，把 <code>D:\FRONTIER\.env</code> 也一起选上</b>，两行自动填好；
+      或者自己用记事本打开 <code>.env</code>，把 FEISHU_WEBHOOK 和 FEISHU_SECRET 手动贴到下面。只存你本机浏览器里。
+    </p>
+    <div class="row">
+      <div>
+        <label>机器人 Webhook</label>
+        <input id="feishuWebhook" type="password" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/..." autocomplete="off" />
+      </div>
+      <div>
+        <label>加签密钥（机器人开了「签名校验」才需要）</label>
+        <input id="feishuSecret" type="password" placeholder="FEISHU_SECRET 的值；没开加签就留空" autocomplete="off" />
+      </div>
+    </div>
+    <div class="actions" style="margin-top:10px">
+      <button id="feishuTest">往群里发条测试消息</button>
+      <span id="feishuStatus" class="hint"></span>
+    </div>
+
+    <label style="margin-top:18px">把扩展攒的"没用"还给早报</label>
+    <p class="hint">
+      你在解读卡上点过「没用 / 跟我无关」的记录，点下面按钮会下载一个 frontier-feedback.txt。
+      用记事本打开 <code>D:\FRONTIER\feedback.txt</code>，把这些行<b>粘贴到文件末尾</b>保存就行，早报下次就不推同类的东西了。
+    </p>
+    <div class="actions" style="margin-top:8px">
+      <button id="exportFrontier">下载 frontier-feedback.txt</button>
+      <span id="syncStatus" class="hint"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>你在卡片上点的"有用 / 没用"，都记在这了</h2>
+    <p class="hint">
+      每点一次，AI 下次判断都会翻一遍这些记录——所以用得越多，它越像你。
+      点下面的按钮可以把全部记录下载成一个表格文件，自己看或备份都行。
+    </p>
+    <p class="hint" id="fbStats">还没有记录。</p>
+    <button id="exportFb" style="margin-top:12px">下载反馈记录表格</button>
+    <span class="hint" id="fbExportStatus" style="margin-left:10px"></span>
+  </div>
+
+  <div class="actions">
+    <button class="primary" id="save">保存全部改动</button>
+    <button id="test">测一下 AI 通不通</button>
+    <button id="clear">清空解读缓存</button>
+    <span id="status"></span>
+  </div>
+
+  <div class="card">
+    <h2>已装好？以后改了代码怎么更新</h2>
+    <ol class="steps">
+      <li>双击项目文件夹里的 <code>install-to-edge.bat</code>（它把最新文件复制到位）。</li>
+      <li>打开 <code>edge://extensions</code>，在「GitHub 中文口语解读」卡片上点「重新加载」。</li>
+      <li>刷新 GitHub 页面，完成。</li>
+    </ol>
+    <p class="hint" style="margin-top:10px">「清空解读缓存」只删读过的仓库记录（下次重新生成），不影响收藏和你的口味设置。</p>
+  </div>
+</div>
+
+<script type="module" src="options.js"></script>
+</body>
+</html>

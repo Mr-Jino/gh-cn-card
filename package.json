@@ -1,0 +1,17 @@
+{
+  "name": "gh-cn-card",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "description": "GitHub 中文口语解读层：仓库页一键生成中文口语解读卡（Edge/Chrome 扩展，无构建步骤）",
+  "scripts": {
+    "test": "node tools/test-drawer.mjs && node tools/test-discover-ui.mjs && node tools/test-background.mjs",
+    "shot": "node tools/shots.mjs",
+    "card": "node tools/test-card.mjs",
+    "discover": "node tools/test-discover.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^31.0.0",
+    "playwright-core": "^1.65.0"
+  }
+}

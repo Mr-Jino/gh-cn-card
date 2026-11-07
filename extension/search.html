@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>发现 · GitHub 中文口语解读</title>
+<style>
+  :root{
+    --bg:#0d1117;--panel:#161b22;--panel2:#0f141b;--line:#30363d;--t1:#e6edf3;--t2:#9198a1;--t3:#6e7681;
+    --accent:#58a6ff;--ok:#3fb950;--warn:#d29922;--err:#f85149;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--t1);font:14px/1.65 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;padding:28px 20px 90px;}
+  .wrap{max-width:860px;margin:0 auto;}
+  header{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+  h1{font-size:19px;font-weight:500;}
+  .sub{color:var(--t2);font-size:13px;margin-top:5px;}
+  .paste{margin-left:auto;display:flex;gap:8px;align-items:center;}
+  .paste input{width:300px;}
+  input[type=text]{background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--t1);
+    font:13px/1.5 inherit;padding:8px 11px;outline:none;}
+  input[type=text]:focus{border-color:var(--accent);}
+  button{font:500 13px/1 inherit;padding:8px 14px;border-radius:7px;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel);color:var(--t1);white-space:nowrap;}
+  button:hover{border-color:var(--t3);}
+  button.primary{background:#238636;border-color:#2ea043;color:#fff;}
+  button.primary:hover{background:#2ea043;}
+  button:disabled{opacity:.45;cursor:default;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:18px;}
+  h2{font-size:12px;font-weight:500;color:var(--t2);letter-spacing:.06em;margin-bottom:12px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;
+    padding:5px 10px 5px 8px;font-size:12.5px;background:var(--panel2);cursor:pointer;user-select:none;}
+  .chip.on{border-color:#2ea043;color:#7ee787;}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--t3);}
+  .chip.on .dot{background:var(--ok);}
+  .chip .x{color:var(--t3);font-size:12px;padding:0 2px;}
+  .chip .x:hover{color:var(--err);}
+  .chip .q{color:var(--t3);font-size:11px;margin-left:2px;}
+  .addrow{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .addrow input.nm{width:120px;}
+  .addrow input.it{flex:1;min-width:260px;}
+  .bar{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap;}
+  #status{font-size:12.5px;color:var(--t2);}
+  #status.err{color:var(--err);}
+  #status.ok{color:var(--ok);}
+  .group{margin-top:22px;}
+  .gtitle{font-size:12px;color:var(--t2);letter-spacing:.06em;margin-bottom:10px;display:flex;gap:8px;align-items:center;}
+  .gtitle b{color:var(--t1);font-weight:500;font-size:13px;letter-spacing:0;}
+  .item{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:10px;}
+  .item:hover{border-color:#3d444d;}
+  .itop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .name{font-weight:500;font-size:13.5px;}
+  .score{font-size:11px;font-weight:500;padding:1px 7px;border-radius:999px;border:1px solid currentColor;}
+  .s8{color:var(--ok);} .s6{color:var(--warn);} .s5{color:var(--t2);}
+  .meta{font-size:11.5px;color:var(--t3);display:flex;gap:10px;}
+  .tag{font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid;white-space:nowrap;}
+  .line{font-size:13px;margin-top:7px;color:var(--t1);}
+  .caution{font-size:12px;color:var(--warn);margin-top:5px;}
+  .acts{display:flex;gap:8px;margin-top:10px;align-items:center;}
+  .acts button{padding:5px 10px;font-size:12px;}
+  .fwd{display:inline-flex;gap:5px;align-items:center;font-size:12px;color:var(--t2);cursor:pointer;
+    margin-left:auto;padding:4px 8px;border:1px solid var(--line);border-radius:7px;user-select:none;}
+  .fwd:hover{border-color:var(--t3);}
+  .fwd input{width:13px;height:13px;accent-color:#2ea043;margin:0;}
+  .fwd.on{color:#7ee787;border-color:#2ea043;}
+  .empty{color:var(--t3);font-size:13px;padding:16px 0;}
+  .note{font-size:12px;color:var(--t3);margin-top:10px;}
+  a{color:var(--accent);text-decoration:none;}
+  .tabs{display:flex;gap:6px;margin-top:20px;border-bottom:1px solid var(--line);}
+  .tabs button{border:none;border-bottom:2px solid transparent;border-radius:0;background:none;color:var(--t2);
+    padding:8px 14px;font-size:13.5px;}
+  .tabs button.on{color:var(--t1);border-bottom-color:var(--accent);}
+  .fav{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);}
+  .fav:last-child{border-bottom:none;}
+  .fav input[type=checkbox]{margin-top:4px;width:15px;height:15px;accent-color:#2ea043;}
+  .fav .fb1{flex:1;min-width:0;}
+  .fav .nm2{font-size:13.5px;font-weight:500;}
+  .fav .ln{font-size:12.5px;color:var(--t2);margin-top:3px;}
+  .fav .bt{display:flex;gap:6px;margin-top:7px;}
+  .fav .bt button{padding:4px 9px;font-size:11.5px;}
+  table.cmp{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table.cmp th,table.cmp td{border:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left;}
+  table.cmp th{background:var(--panel2);font-weight:500;color:var(--t2);width:110px;white-space:nowrap;}
+  table.cmp td{color:var(--t1);line-height:1.65;white-space:pre-wrap;}
+  .cmphead{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .cmphead span{font-size:12px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--t2);}
+  #roundNote{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px;font-size:12.5px;
+    color:var(--t2);background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:8px;padding:8px 12px;}
+  #roundNote[hidden]{display:none;}
+  #roundNote b{color:var(--t1);font-weight:500;}
+  #roundNote button{padding:4px 10px;font-size:11.5px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>发现</h1>
+      <p class="sub">用中文说你想找什么，我把它翻成 GitHub 搜索词，再把结果翻回中文给你挑。</p>
+    </div>
+    <div class="paste">
+      <input type="text" id="pasteUrl" placeholder="刷到别人推荐的仓库？粘贴 GitHub 链接直接读" />
+      <button id="pasteGo">读它</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button data-tab="discover" class="on">发现</button>
+    <button data-tab="fav">收藏 <span id="favCount">0</span></button>
+  </div>
+
+  <section id="tab-discover">
+  <div class="card">
+    <h2>我的关注点（点一下开/关）</h2>
+    <div class="chips" id="chips"></div>
+    <div class="addrow">
+      <input type="text" class="nm" id="newName" placeholder="名字，如 字幕工具" />
+      <input type="text" class="it" id="newIntent" placeholder="我想找什么样的：比如 能批量给视频加字幕、本地跑的" />
+      <button id="addBtn">加上</button>
+    </div>
+    <div class="bar">
+      <button class="primary" id="runBtn">搜一轮</button>
+      <button id="forceBtn">把看过的也捞出来重搜</button>
+      <button id="roundDone" disabled title="这一轮刷完了，里面的仓库接下来 14 天不再出现">这轮都看完了</button>
+      <button id="clearSeenBtn" title="把所有看过记录清零，全部重新出现">清空「看过」记录</button>
+      <button id="fwdBtn" disabled title="把勾选的仓库推到 FRONTIER 的飞书群里，慢慢琢磨">转发到飞书群</button>
+      <span id="status"></span>
+    </div>
+    <div id="searchErrors"></div>
+    <div class="note">
+      只有你<b>点过「不感兴趣」、收藏过、或点开读过的仓库</b>才不会在下一轮出现——没看完的会一直留着。
+      一轮看完想清屏，点「这轮都看完了」。想拉几个到 FRONTIER 的飞书群里慢慢琢磨：勾条目右边的「发群」，再点「转发到飞书群」。
+      如果某个关注点搜失败，原因会显示在下面。
+    </div>
+  </div>
+
+  <div id="roundNote" hidden></div>
+  <div id="results"></div>
+  </section>
+
+  <section id="tab-fav" hidden>
+    <div class="card">
+      <h2>收藏（勾两个，下面直接出对比，不用再点别的）</h2>
+      <div id="favList"><div class="empty">还没有收藏。在解读卡右上角点 ☆，或在发现结果上点「收藏」。</div></div>
+      <div class="bar"><span id="favStatus" class="note"></span></div>
+      <div id="cmpInline"></div>
+    </div>
+  </section>
+</div>
+<script type="module" src="search.js"></script>
+</body>
+</html>
