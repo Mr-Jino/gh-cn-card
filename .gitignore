@@ -10,3 +10,7 @@ tools/last-output.md
 AI Agent使用的提示词.txt
 .env.local
 *.log
+
+# github-accelerator 在仓库目录留下的 hosts 备份
+*.ghacc.bak.*
+hosts.test*
