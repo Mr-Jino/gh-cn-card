@@ -86,7 +86,7 @@ gh-cn-card 的做法：
 | 接口地址 / 模型名 | 默认 DeepSeek（`https://api.deepseek.com/v1` + `deepseek-chat`），换其他厂商改这两行 |
 | API Key | 必填。保存在浏览器本地 `chrome.storage.local`，不上传。保存时浏览器会请求访问对应域名的权限，必须允许 |
 | GitHub Token | 建议填。只读，无需任何 scope |
-| 飞书机器人 | 可选。在"和早报互通"一节，导入 `D:\FRONTIER\.env`（如果有的话）或手动贴 Webhook |
+| 飞书机器人 | 可选。导入任意 `.env` 文件（只认 `FEISHU_WEBHOOK` / `FEISHU_SECRET` 两行）或手动贴 Webhook，填完点「测一条」验证 |
 
 ### 4. 更新
 

@@ -86,7 +86,7 @@ The options page opens on first install (toolbar puzzle icon otherwise):
 | API base / model | Defaults to DeepSeek (`https://api.deepseek.com/v1` + `deepseek-chat`); edit these two lines for other providers |
 | API key | Required. Stored in local `chrome.storage.local` only. Saving prompts for permission to reach the endpoint domain — you must allow it |
 | GitHub token | Recommended. Read-only, no scopes needed |
-| Feishu bot | Optional. Under the "sync" section: import a `.env` file or paste the webhook manually |
+| Feishu bot | Optional. Import any `.env` file (only `FEISHU_WEBHOOK` / `FEISHU_SECRET` lines are read) or paste the webhook manually, then hit "send test" |
 
 ### 4. Update
 
