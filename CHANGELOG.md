@@ -3,7 +3,7 @@
 ## 0.3.1 · 2026-11-07
 
 - 扩展图标（16/32/48/128），由 `tools/icons.mjs` 用无头 Edge 渲染 SVG 生成
-- CI：GitHub Actions 在 Node 20/22 上跑全部 95 条断言，README 挂测试徽章
+- CI：GitHub Actions 在 Node 22/24 上跑全部 95 条断言，README 挂测试徽章
 - 首个 GitHub Release：附可直接加载的扩展 zip，不用 git 也能装
 
 ## 0.3.0 · 2026-11-07
